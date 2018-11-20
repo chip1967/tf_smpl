@@ -8,6 +8,7 @@ Note: To get original smpl joints, use self.J_transformed
 
 import numpy as np
 import pickle
+import sys
 
 import tensorflow as tf
 from .batch_lbs import batch_rodrigues, batch_global_rigid_transformation
@@ -20,7 +21,10 @@ class SMPL(object):
         """
         # -- Load SMPL params --
         with open(pkl_path, 'rb') as f:
-            dd = pickle.load(f, encoding='latin1')
+            if sys.version_info[:3] > (3,0):
+                dd = pickle.load(f, encoding='latin1')
+            else:
+                dd = pickle.load(f)
         # Mean template vertices
         self.v_template = tf.constant(
             dd['v_template'],
